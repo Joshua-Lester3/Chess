@@ -1,34 +1,39 @@
 package Chess.Game;
 
-import java.awt.*;
+import java.awt.Point;
 
 public class Pawn extends Piece {
     protected Pawn(Point point, boolean isWhite) {
-        super(point, 'P', isWhite);
+        super(point, 'p', isWhite);
     }
 
     protected Pawn(int x, int y, boolean isWhite) {
-        super(x, y, 'P', isWhite);
+        super(x, y, 'p', isWhite);
     }
     @Override
-    protected boolean isLegalMove(Point targetPos, boolean isSpaceOccupied) {
+    protected boolean isLegalMove(Point targetPosition, ChessBoard board) {
+        boolean isSpaceEmpty = board.get(targetPosition) instanceof EmptyPiece;
         if (super.getIsWhite()) {
-            if ((super.getX() == targetPos.x + 1) && super.getY() == targetPos.y && !isSpaceOccupied)
-                return true;
+            if ((super.getX() == targetPosition.x + 1) && super.getY() == targetPosition.y)
+                return isSpaceEmpty;
         } else {
-            if ((super.getX() == targetPos.x - 1) && super.getY() == targetPos.y && !isSpaceOccupied)
-                return true;
+            if ((super.getX() == targetPosition.x - 1) && super.getY() == targetPosition.y)
+                return isSpaceEmpty;
         }
         return false;
     }
 
     @Override
-    protected boolean isLegalTakingMove(Piece target, boolean isSpaceOccupied) {
+    protected boolean isLegalTakingMove(Point targetPosition, boolean targetIsWhite, ChessBoard board) {
+        if (super.getIsWhite() == targetIsWhite) {
+            return false;
+        }
+        boolean isSpaceEmpty = board.get(targetPosition) instanceof EmptyPiece;
         if (super.getIsWhite()) {
-            if ((target.getX() + 1) == super.getX() && ((target.getY() - 1) == super.getY() || (target.getY() + 1) == super.getY()) && isSpaceOccupied && !target.getIsWhite())
+            if (((targetPosition.x + 1) == super.getX()) && ((targetPosition.y - 1) == super.getY() || (targetPosition.y + 1) == super.getY()) && !isSpaceEmpty)
                 return true;
         } else {
-            if ((target.getX() - 1) == super.getX() && ((target.getY() - 1) == super.getY() || (target.getY() + 1) == super.getY()) && isSpaceOccupied && target.getIsWhite())
+            if ((targetPosition.x - 1) == super.getX() && ((targetPosition.y - 1) == super.getY() || (targetPosition.y + 1) == super.getY()) && !isSpaceEmpty)
                 return true;
         }
         return false;

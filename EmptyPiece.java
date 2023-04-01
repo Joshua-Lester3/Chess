@@ -1,6 +1,6 @@
 package Chess.Game;
 
-import java.awt.*;
+import java.awt.Point;
 
 public class EmptyPiece extends Piece {
     protected EmptyPiece(Point point) {
@@ -13,12 +13,12 @@ public class EmptyPiece extends Piece {
 
     //returns false because you can't move an empty piece, or else the user will be able to move it
     @Override
-    protected boolean isLegalMove(Point movement, boolean isSpaceOccupied) {
+    protected boolean isLegalMove(Point targetPosition, ChessBoard board) {
         return false;
     }
 
     @Override
-    protected boolean isLegalTakingMove(Piece pos, boolean isSpaceOccupied) {
+    protected boolean isLegalTakingMove(Point targetPosition, boolean targetIsWhite, ChessBoard board) {
         return false;
     }
 }
